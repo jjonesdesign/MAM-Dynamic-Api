@@ -86,6 +86,12 @@ def update_mam_seedbox(cookie_file, mam_id=None):
         # Check for success
         if not response.get('Success', False):
             error_msg = response.get('msg', 'Unknown error')
+            
+            # Special handling for "Last change too recent"
+            if "Last change too recent" in error_msg:
+                logger.info("Last update too recent - continuing...")
+                return True
+                
             logger.error(f"MAM API Error: {error_msg}")
             logger.info("Shutting down container due to API error...")
             sys.exit(1)
@@ -118,23 +124,30 @@ def check_cookie_file(cookie_file):
 def main():
     logger.info("Starting MAM Dynamic API service")
     load_dotenv()
-    mam_id = os.getenv('MAM_ID')
     
-    if not mam_id:
-        logger.error("MAM_ID environment variable is not set")
-        return
-
     cookie_file = '/config/mam.cookies'
     logger.info(f"Using cookie file: {cookie_file}")
 
-    # Check if cookie file exists and contains valid session
-    if not check_cookie_file(cookie_file):
+    # Check for existing valid session in cookie file
+    if check_cookie_file(cookie_file):
+        logger.info("Found valid session in cookie file")
+        mam_id = None
+    else:
+        # No valid cookie, check for MAM_ID in environment
+        mam_id = os.getenv('MAM_ID')
+        if not mam_id:
+            logger.error("No valid session in cookie file and MAM_ID environment variable is not set")
+            logger.error("Please either:")
+            logger.error("  1. Provide MAM_ID environment variable")
+            logger.error("  2. Use a cookie file containing valid mam_id")
+            return
+
         logger.info("No valid session found, performing initial setup...")
         if not update_mam_seedbox(cookie_file, mam_id):
             logger.error("Failed to perform initial setup")
             return
 
-    logger.info(f"Starting monitoring loop with MAM_ID: {mam_id}")
+    logger.info("Starting monitoring loop...")
     
     while True:
         try:
