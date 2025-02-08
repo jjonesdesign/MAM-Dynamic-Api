@@ -1,0 +1,2 @@
+# Specify minimum Python version
+python-dotenv==1.0.0  # For environment variable management 
