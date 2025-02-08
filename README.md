@@ -53,9 +53,7 @@ Once deployed, the container will automatically update your MyAnonamouse.net aut
 ## Support & Contributions  
 If you encounter any issues or have suggestions, feel free to submit an issue or contribute via pull requests.  
 
+[![Buy Me a Coffee](https://img.buymeacoffee.com/button-api/?text=Buy%20Me%20a%20Coffee&emoji=☕&slug=jjonesdesign&button_colour=FFDD00&font_colour=000000&font_family=Arial&outline_colour=000000&coffee_colour=ffffff)](https://buymeacoffee.com/jjonesdesign)
+
 ## License  
 This project is licensed as described in the LICENSE file.  
-
----
-
-Let me know if you need any modifications! 🚀
