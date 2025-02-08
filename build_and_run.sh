@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Helper file to build and run the container
+
 # Check if MAM_ID is provided
 if [ -z "$1" ]; then
     echo "Error: MAM_ID not provided"
